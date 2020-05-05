@@ -8,7 +8,7 @@
 
 * Groups can have 1 to 3 participants;
 
-* **Report deadline**: 25/05/2020 (to be sent to cbm@di.uminho.pt and vitorenesduarte@gmail.com):
+* **Report deadline**: 31/05/2020 (to be sent to cbm@di.uminho.pt and vitorenesduarte@gmail.com):
     * Each group should submit a short report (up to 6 pages) on the main challenges and choices. The report should contain:
         * Brief description of the algorithm;
         * Why was the algorithm picked ?
@@ -37,4 +37,3 @@ At this point, the simulator supports:
 4. Periodic view-change (e.g. every 10s, the set of neighbours changes).
 
 Where the *1.* and *2.* are used to specify algorithms and *3.* and *4.* are used to test them. Depending on the algorithm picked, some of the above four features may not be necessary.
-
