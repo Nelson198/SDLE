@@ -1,12 +1,15 @@
 % Setup -------------------------------
 
-\documentclass[a4paper]{report}
-\usepackage[a4paper, total={6in, 10in}]{geometry}
+\documentclass[a4paper]{article}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
 \usepackage{hyperref}
 \usepackage{indentfirst}
+
+\usepackage[backend=bibtex,style=numeric,sorting=ynt]{biblatex}
+%\usepackage[autostyle=true]{csquotes}
+\addbibresource{Relatório.bib}
 
 % Encoding
 %--------------------------------------
@@ -35,7 +38,7 @@
 }
 \author{
 	\begin{tabular}{ll}
-		\textbf{Grupo}
+		\textbf{Grupo nº 1}
 		\\
 		\hline
 		PG41080 & João Ribeiro Imperadeiro
@@ -50,43 +53,38 @@
 
 \begin{document}
 
-\begin{titlepage}
-    \maketitle
-\end{titlepage}
-
-% Índice
-
-\tableofcontents
-\listoffigures
+\maketitle
 
 % Introdução
 
-\chapter{Introdução} \label{ch:Introduction}
-\large {
-
+\section{Introdução} \label{sec:Introduction}
+\large{
+	\parencite{ref}
 }
 
-\chapter{Implementação} \label{ch:Implementation}
-\large {
-	\section{A} \label{sec:A}
-		\subsection{A1} \label{subsec:A-1}
-            \subsubsection{A11} \label{sssec:A-1-1}
-            \subsubsection{A12} \label{sssec:A-1-2}
+\section{Algoritmo} \label{sec:Algorithm}
+\large{
+	Dos algoritmos de agregação distribuída presentes no documento referenciado no enunciado deste trabalho prático \parencite{article}, os elementos deste grupo optaram por escolher o algoritmo \textbf{\textit{flow updating}}.
+	Este, ao nível de comunicação, é classificado como não estruturado, inserindo-se na categoria \textit{gossip} que, por sua vez, diz respeito à forma como as mensagens são disseminadas pela rede de comunicação.
+	Quanto à perspetiva computacional, este algoritmo é baseado no conceito de \textit{averaging}, isto é, na computação iterativa de médias parciais que, ao longo do tempo, convergem para um resultado final previamente determinado.
+	Esta última técnica permite também a derivação de outras funções de agregação (como por exemplo, \textit{count} ou \textit{sum}) de acordo com as combinações dos valores inicialmente instanciados.
 
-		\subsection{A2} \label{subsec:A-2}
+	Uma das razões que levou este grupo a escolher este algoritmo foi a capacidade do mesmo em tolerar a injeção de falhas. Esta última caraterística é bastante importante sobretudo no que diz respeito à perda de mensagens trocadas na rede de comunicação.
+	Para além desta vantagem associada ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, como também possibilita uma computação precisa de valores.
+	Por fim, a execução do algoritmo em causa é independente da topologia do roteamento de rede.
+
+	\subsection{Implementação} \label{subsec:Implementation}
 }
 
-\chapter{Conclusão} \label{ch:Conclusion}
+\section{Simulador} \label{sec:Simulator}
+
+\section{Análise de resultados obtidos} \label{sec:Simulator}
+
+\section{Conclusão} \label{sec:Conclusion}
 \large{
 	
 }
 
-\appendix
-\chapter{Observações} \label{ch:Observations}
-\begin{itemize}
-    \item Algoritmos de agregação distribuída:
-    \par \textit{\url{https://arxiv.org/pdf/1110.0725.pdf}}
-\end{itemize}
-
+\printbibliography[heading=bibintoc]
 
 \end{document}
