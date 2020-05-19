@@ -7,9 +7,9 @@
 \usepackage{hyperref}
 \usepackage{indentfirst}
 
-\usepackage[backend=bibtex,style=numeric,sorting=ynt]{biblatex}
-%\usepackage[autostyle=true]{csquotes}
-\addbibresource{Relatório.bib}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{float}
 
 % Encoding
 %--------------------------------------
@@ -25,6 +25,13 @@
 % Hyphenation rules
 %--------------------------------------
 \usepackage{hyphenat}
+%--------------------------------------
+
+% References (BibTeX)
+%--------------------------------------
+\usepackage[backend=bibtex,style=numeric,sorting=ynt]{biblatex}
+\usepackage[autostyle=true]{csquotes}
+\addbibresource{Relatório.bib}
 %--------------------------------------
 
 % Capa do relatório
@@ -60,6 +67,10 @@
 \section{Introdução} \label{sec:Introduction}
 \large{
 	\parencite{ref}
+
+	O presente relatório descreve o desenvolvimento do projeto de cariz prático da unidade curricular de Sistemas Distribuídos em Larga Escala.
+	Neste trabalho prático é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis na referência \parencite{article} indicada no enunciado do mesmo.
+	Após concretizar a especificação do algoritmo escolhido, é posteriormente solicitado o teste do mesmo no simulador desenvolvido ao longo do semestre do presente ano letivo.
 }
 
 \section{Algoritmo} \label{sec:Algorithm}
@@ -73,12 +84,21 @@
 	Para além desta vantagem associada ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, como também possibilita uma computação precisa de valores.
 	Por fim, a execução do algoritmo em causa é independente da topologia do roteamento de rede.
 
+	\subsection{Conceito} \label{subsec:Concept}
+
 	\subsection{Implementação} \label{subsec:Implementation}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.0\textwidth, frame]{Imagens/Pseudocode.png}
+		\caption{Pseudocódigo do algoritmo \textit{Flow Updating}}
+		\label{fig:1}
+	\end{figure}
 }
 
 \section{Simulador} \label{sec:Simulator}
 
-\section{Análise de resultados obtidos} \label{sec:Simulator}
+\section{Análise de resultados obtidos} \label{sec:Analysis of results}
 
 \section{Conclusão} \label{sec:Conclusion}
 \large{
