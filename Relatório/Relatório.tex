@@ -66,11 +66,14 @@
 
 \section{Introdução} \label{sec:Introduction}
 \large{
-	\parencite{ref}
-
 	O presente relatório descreve o desenvolvimento do projeto de cariz prático da unidade curricular de Sistemas Distribuídos em Larga Escala.
-	Neste trabalho prático é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis na referência \parencite{article} indicada no enunciado do mesmo.
+	Neste trabalho é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis na referência \parencite{article} indicada no enunciado do mesmo.
 	Após concretizar a especificação do algoritmo escolhido, é posteriormente solicitado o teste do mesmo no simulador desenvolvido ao longo do semestre do presente ano letivo.
+
+	Tal como é referido nos manuscritos \parencite{ref} e \parencite{article}, a agregação de dados distribuídos desempenha um papel bastante importante na concepção de diversos sistemas escaláveis uma vez que possibilita a determinação descentralizada de propriedades globais significativas, que posteriormente podem ser utilizadas para direcionar a execução de outras aplicações distribuídas.
+	Vários algoritmos de agregação distribuída foram propostos ao longo dos últimos anos, exibindo propriedades diferentes em termos de precisão, desempenho e de comunicação. No entanto, muitas dessas abordagens não possuem caraterísticas relacionadas com a tolerância de falhas. Desta forma, no âmbito de sistemas distribuídos, este grupo de trabalho viu-se interessado em implementar um dos algoritmos associados a esta propriedade.
+
+	Relativamente à estrutura deste relatório, é exibido o algoritmo escolhido pelos elementos deste grupo, apresentando o conceito e a implementação intrínsecos ao mesmo. Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
 }
 
 \section{Algoritmo} \label{sec:Algorithm}
@@ -84,9 +87,13 @@
 	Para além desta vantagem associada ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, como também possibilita uma computação precisa de valores.
 	Por fim, a execução do algoritmo em causa é independente da topologia do roteamento de rede.
 
+	No \hyperref[sec:Analysis of results]{4º capítulo} deste documento é apresentado todos os resultados obtidos após a implementação do algoritmo escolhido, discutindo-se a veracidade das propriedades mencionadas acima.
+
 	\subsection{Conceito} \label{subsec:Concept}
+	...
 
 	\subsection{Implementação} \label{subsec:Implementation}
+	...
 
 	\begin{figure}[H]
 		\centering
@@ -97,12 +104,18 @@
 }
 
 \section{Simulador} \label{sec:Simulator}
+\large{
+	...
+}
 
 \section{Análise de resultados obtidos} \label{sec:Analysis of results}
+\large{
+	...
+}
 
 \section{Conclusão} \label{sec:Conclusion}
 \large{
-	
+	...
 }
 
 \printbibliography[heading=bibintoc]
