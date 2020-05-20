@@ -90,7 +90,7 @@
 	No \hyperref[sec:Analysis of results]{4º capítulo} deste documento é apresentado todos os resultados obtidos após a implementação do algoritmo escolhido, discutindo-se a veracidade das propriedades mencionadas acima.
 
 	\subsection{Conceito} \label{subsec:Concept}
-	...
+	O algoritmo é baseado na manipulação de fluxos (no sentido teórico de grafos), que são atualizados usando mensagens idempotentes, fornecendo a ele recursos exclusivos de robustez.
 
 	\subsection{Implementação} \label{subsec:Implementation}
 	...
@@ -110,12 +110,12 @@
 
 \section{Análise de resultados obtidos} \label{sec:Analysis of results}
 \large{
-	...
+	Os resultados da avaliação obtidos, quando comparados com outras abordagens de \textit{averaging}, revelaram que os superam em termos de complexidade temporal (maior desempenho) e ao nível do número de mensagens trocadas (\textit{overhead}).
 }
 
 \section{Conclusão} \label{sec:Conclusion}
 \large{
-	...
+	Este algoritmo tolera a perda substancial de mensagens (\textit{link failures}), enquanto outros algoritmos concorrentes da mesma categoria podem ser afetados por uma única mensagem perdida.
 }
 
 \printbibliography[heading=bibintoc]
