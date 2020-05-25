@@ -67,33 +67,76 @@
 \section{Introdução} \label{sec:Introduction}
 \large{
 	O presente relatório descreve o desenvolvimento do projeto de cariz prático da unidade curricular de Sistemas Distribuídos em Larga Escala.
-	Neste trabalho é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis na referência \parencite{article} indicada no enunciado do mesmo.
-	Após concretizar a especificação do algoritmo escolhido, é posteriormente solicitado o teste do mesmo no simulador desenvolvido ao longo do semestre do presente ano letivo.
+	Neste trabalho é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis no documento de suporte ao enunciado do mesmo \parencite{article}.
+	Após a implementação do algoritmo escolhido, é posteriormente solicitado o teste do mesmo no simulador desenvolvido ao longo do semestre do presente ano letivo.
 
-	Tal como é referido nos manuscritos \parencite{ref} e \parencite{article}, a agregação de dados distribuídos desempenha um papel bastante importante na concepção de diversos sistemas escaláveis uma vez que possibilita a determinação descentralizada de propriedades globais significativas, que posteriormente podem ser utilizadas para direcionar a execução de outras aplicações distribuídas.
-	Vários algoritmos de agregação distribuída foram propostos ao longo dos últimos anos, exibindo propriedades diferentes em termos de precisão, desempenho e de comunicação. No entanto, muitas dessas abordagens não possuem caraterísticas relacionadas com a tolerância de falhas. Desta forma, no âmbito de sistemas distribuídos, este grupo de trabalho viu-se interessado em implementar um dos algoritmos associados a esta propriedade.
+	A agregação de dados distribuídos desempenha um papel bastante importante na concepção de diversos sistemas escaláveis uma vez que possibilita a determinação descentralizada de propriedades globais significativas, 
+	que posteriormente podem ser utilizadas para direcionar a execução de outras aplicações distribuídas.
+	Vários algoritmos de agregação distribuída foram propostos ao longo dos últimos anos, exibindo propriedades diferentes em termos de precisão, 
+	desempenho e de métricas de comunicação. No entanto, muitas dessas abordagens não possuem caraterísticas relacionadas com a tolerância de faltas. 
+	Desta forma, no âmbito de sistemas distribuídos, este grupo de trabalho viu-se interessado em implementar um dos algoritmos com esta propriedade.
 
-	Relativamente à estrutura deste relatório, é exibido o algoritmo escolhido pelos elementos deste grupo, apresentando o conceito e a implementação intrínsecos ao mesmo. Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
+	Relativamente à estrutura deste relatório, é exibido o algoritmo escolhido, apresentando o conceito e a implementação intrínsecos ao mesmo. 
+	Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
 }
 
 \section{Algoritmo} \label{sec:Algorithm}
 \large{
-	Dos algoritmos de agregação distribuída presentes no documento referenciado no enunciado deste trabalho prático \parencite{article}, os elementos deste grupo optaram por escolher o algoritmo \textbf{\textit{flow updating}}.
+	Dos algoritmos de agregação distribuída presentes no documento referenciado no enunciado deste trabalho prático \parencite{article}, optou-se pela escolha do algoritmo \textbf{\textit{flow updating}}.
 	Este, ao nível de comunicação, é classificado como não estruturado, inserindo-se na categoria \textit{gossip} que, por sua vez, diz respeito à forma como as mensagens são disseminadas pela rede de comunicação.
-	Quanto à perspetiva computacional, este algoritmo é baseado no conceito de \textit{averaging}, isto é, na computação iterativa de médias parciais que, ao longo do tempo, convergem para um resultado final previamente determinado.
-	Esta última técnica permite também a derivação de outras funções de agregação (como por exemplo, \textit{count} ou \textit{sum}) de acordo com as combinações dos valores inicialmente instanciados.
+	Quanto à perspetiva computacional, este algoritmo tem como objetivo a computação iterativa de médias parciais que, ao longo do tempo, deverão convergir.
+	Esta última técnica permite também a derivação de outras funções de agregação (como por exemplo, \textit{count} ou \textit{sum}), de acordo com as combinações dos valores inicialmente instanciados.
 
-	Uma das razões que levou este grupo a escolher este algoritmo foi a capacidade do mesmo em tolerar a injeção de falhas. Esta última caraterística é bastante importante sobretudo no que diz respeito à perda de mensagens trocadas na rede de comunicação.
-	Para além desta vantagem associada ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, como também possibilita uma computação precisa de valores.
+	Uma das razões que levou este grupo a escolher este algoritmo foi a capacidade do mesmo em tolerar a injeção de faltas transientes. 
+	Esta última caraterística é bastante importante sobretudo no que diz respeito à perda de mensagens trocadas na rede de comunicação.
+	Com pequenas alterações, é ainda possível que o algoritmo suporte falhas de membros, falhas permanentes de ligações e mudanças de vizinhança.
+	Para além desta vantagem associada ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, 
+	como também possibilita uma computação mais precisa de valores.
 	Por fim, a execução do algoritmo em causa é independente da topologia do roteamento de rede.
 
-	No \hyperref[sec:Analysis of results]{4º capítulo} deste documento é apresentado todos os resultados obtidos após a implementação do algoritmo escolhido, discutindo-se a veracidade das propriedades mencionadas acima.
+	No \hyperref[sec:Analysis of results]{4º capítulo} deste documento são apresentados todos os resultados obtidos após a implementação do algoritmo escolhido, discutindo-se a veracidade das propriedades mencionadas acima.
 
 	\subsection{Conceito} \label{subsec:Concept}
-	O algoritmo é baseado na manipulação de fluxos (no sentido teórico de grafos), que são atualizados usando mensagens idempotentes, fornecendo a ele recursos exclusivos de robustez.
+	O algoritmo difere de outros propostos para o mesmo problema no sentido em que não envia mensagens complexas e que serão guardadas e disseminadas.
+	Em contraste, faz uso do conceito de fluxo (no sentido da teoria de grafos), atualizando-o com recurso ao valor inicial e à contribuição de fluxos de outros nós vizinhos, 
+	sendo que o fluxo é simétrico nos extremos de cada ligação. Por isto, a soma das médias de cada um dos nós deve manter-se constante.
+	Assim, partilha-se apenas o fluxo para com os vizinhos, sendo que a perda de uma destas mensagens, não implica uma falha grave.
+	A intuição é que a simetria pode ser quebrada, se for possível garantir que uma mensagem chegará no futuro e a re-estabeleça.
+
+	Importa realçar que existem duas versões do algoritmo. A primeira assenta no envio de mensagens com recurso a \textit{broadcast}.
+	A segunda assenta no envio de mensagens em \textit{unicast}.
+
 
 	\subsection{Implementação} \label{subsec:Implementation}
-	...
+	A implementação do algoritmo foi feita na linguagem \texttt{Python}.
+
+		\subsubsection{Broadcast}
+		Criou-se uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingBroad}, que contém as seguintes informações no seu estado:
+		\begin{itemize}
+			\item um dicionário "f" que contém os fluxos desses nós para os seus vizinhos;
+			\item um dicionário "e" que contém as estimativas que recebeu dos seus vizinhos;
+			\item o seu valor inicial, "v";
+			\item a lista dos seus vizinhos;
+			\item as mensagens acumuladas de uma ronda;
+			\item um inteiro "timeout" que representa a duração de cada ronda, pré-estabelecida.
+		\end{itemize}
+
+		Esta classe contém as seguintes funções:
+		\begin{itemize}
+			\item \texttt{gen_message} - devolve a lista de mensagens a serem enviadas nessa ronda, incluindo uma mensagem especial de \textit{timeout}, dirigida ao próprio nó e que representa o fim de uma ronda;
+			\item \texttt{state_transition} - executada em reação à mensagem de \textit{timeout}, ou seja, no fim da ronda, por forma a calcular as novas estimativas e fluxos dos vizinhos, bem como os próprios;
+			\item \texttt{calculate_estimate} - executada pela função anterior e corresponde ao valor calculado durante a transição de estado, ou seja, devolve a nova estimativa para o valor objetivo.
+		\end{itemize}
+
+		\subsubsection{Unicast}
+		Criou-se uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingUni}, que contém as mesmas informações, no seu estado, que as indicadas acima, para a classe de \textit{Broadcast}.
+		Para além destas, têm ainda um inteiro que representa o \textit{id} do vizinho escolhido, sendo que o mesmo é selecionado pela função \texttt{chooseNeighbor}, que devolve aleatoriamente o identificador de um dos vizinhos.
+
+		As funções desta classe são as mesmas que as expostas anteriormente na classe \textit{broadcast}, com as seguintes alterações:
+		\begin{itemize}
+			\item \texttt{gen_message} - calcula apenas uma mensagem para o vizinho k, em vez de todos os vizinhos, e a mensagem especial de fim de ronda;
+			\item \texttt{state_transition} - calcula apenas a estimativa e o fluxo do vizinho k;
+		\end{itemize}
 
 	\begin{figure}[H]
 		\centering
