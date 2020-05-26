@@ -167,11 +167,17 @@
 \section{Análise de resultados obtidos} \label{sec:Analysis of results}
 \large{
 	Os resultados da avaliação obtidos, quando comparados com outras abordagens de \textit{averaging}, revelaram que os superam em termos de complexidade temporal (maior desempenho) e ao nível do número de mensagens trocadas (\textit{overhead}).
+	Em relação às duas variantes deste algoritmo, verificou-se que, de facto, a versão \textit{broadcast} é melhor do que a \textit{unicast} em ambos os aspetos anteriormente referidos.
+	É também de salientar que mesmo em condições de perdas significativas de mensagens, o algoritmo elegido exibe um melhor desempenho quando comparado com outros problemas clássicos sem a ocorrência deste último acontecimento.
 }
 
 \section{Conclusão} \label{sec:Conclusion}
 \large{
-	Este algoritmo tolera a perda substancial de mensagens (\textit{link failures}), enquanto outros algoritmos concorrentes da mesma categoria podem ser afetados por uma única mensagem perdida.
+	Apesar do algoritmo selecionado por este grupo de trabalho trocar um maior número de mensagens na rede de comunicação (ainda que pouco significativo) do que outros de agregação distribuída, \textit{flow updating} é a única abordagem robusta e resiliente de agregação tolerante a falhas conhecida.
+	Esta é capaz de se adaptar continuamente às mudanças topológicas da rede, sem recorrer a nenhum tipo de mecanismo de reinicialização. Além disso, este algoritmo é adequado em cenários dinâmicos, onde são necessárias estimativas precisas sem haver a imposição muito restrita ao nível da quantidade de mensagens trocadas.
+
+
+	% Este algoritmo tolera a perda substancial de mensagens (\textit{link failures}), enquanto outros algoritmos concorrentes da mesma categoria podem ser afetados por uma única mensagem perdida.
 }
 
 \printbibliography[heading=bibintoc]
