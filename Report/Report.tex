@@ -156,7 +156,12 @@
 
 \section{Simulador} \label{sec:Simulator}
 \large{
-	...
+	No que toca ao simulador utilizado, para proceder à realização de testes sobre o algoritmo escolhido, foram adicionados algumas funcionalidades face ao que foi desenvolvido durante as aulas da componenete prática desta unidade curricular.
+	Dado que o algoritmo selecionado suporta a injeção de faltas transientes, foi incorporado no simulador deste trabalho um mecanismo associado a esta última propriedade.
+	Como tal, foi declarada uma variável \textit{fp} relativa à probabilidade de ocorrência de faltas, isto é, à probabilidade de uma determinada mensagem se perder na rede de comunicação.
+	Para além desta caraterística, foi também introduzida uma técnica de mudança de vizinhança. Tal como a última propriedade, foi instanciada uma incógnita \textit{vcp} relativa ao número de segundos até que surja uma nova mudança de vizinhança no grafo em causa.
+
+	Com estas modificações, foi possível averiguar a natureza inerente ao algoritmo \textit{flow updating}, observando-se o seu comportamento no contexto de sistemas distribuídos.
 }
 
 \section{Análise de resultados obtidos} \label{sec:Analysis of results}
