@@ -70,11 +70,11 @@
 	Neste trabalho é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis no documento de suporte ao enunciado do mesmo \parencite{article}.
 	Após a implementação do algoritmo escolhido, é posteriormente solicitado o teste do mesmo no simulador desenvolvido ao longo do semestre do presente ano letivo.
 
-	Tal como é mencionado nas referências bibliográficas \parencite{ref} e \parencite{article}, a agregação de dados distribuídos desempenha um papel bastante importante na concepção de diversos sistemas escaláveis uma vez que possibilita a determinação descentralizada de propriedades globais significativas, 
+	A agregação de dados distribuídos desempenha um papel bastante importante na concepção de diversos sistemas escaláveis uma vez que possibilita a determinação descentralizada de propriedades globais significativas, 
 	que posteriormente podem ser utilizadas para direcionar a execução de outras aplicações distribuídas.
 	Vários algoritmos de agregação distribuída foram propostos ao longo dos últimos anos, exibindo propriedades diferentes em termos de precisão, 
 	desempenho e de métricas de comunicação. No entanto, muitas dessas abordagens não possuem caraterísticas relacionadas com a tolerância de faltas. 
-	Desta forma, no âmbito de sistemas distribuídos, este grupo de trabalho viu-se interessado em implementar um dos algoritmos com esta propriedade.
+	Desta forma, este grupo de trabalho viu-se interessado em implementar um dos algoritmos com esta propriedade, \textit{flow updating} \parencite{ref}.
 
 	Relativamente à estrutura deste relatório, é exibido o algoritmo escolhido, apresentando o conceito e a implementação intrínsecos ao mesmo. 
 	Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
@@ -82,9 +82,8 @@
 
 \section{Algoritmo} \label{sec:Algorithm}
 \large{
-	Dos algoritmos de agregação distribuída presentes no documento referenciado no enunciado deste trabalho prático \parencite{article}, optou-se pela escolha do algoritmo \textbf{\textit{flow updating}}.
-	Este, ao nível de comunicação, é classificado como não estruturado, inserindo-se na categoria \textit{gossip} que, por sua vez, diz respeito à forma como as mensagens são disseminadas pela rede de comunicação.
-	Quanto à perspetiva computacional, este algoritmo tem como objetivo a computação iterativa de médias parciais que, ao longo do tempo, convergem para um determinado valor.
+	O algoritmo \textbf{\textit{flow updating}}, ao nível de comunicação, é classificado como não estruturado, inserindo-se na categoria \textit{gossip} que, por sua vez, diz respeito à forma como as mensagens são disseminadas pela rede de comunicação.
+	Quanto à perspetiva computacional, este algoritmo tem como objetivo a computação iterativa de médias parciais que, ao longo do tempo, convergem.
 	Esta última técnica permite também a derivação de outras funções de agregação (como por exemplo, \textit{count} ou \textit{sum}), de acordo com as combinações dos valores inicialmente instanciados.
 
 	Uma das razões que levou este grupo a escolher este algoritmo foi a capacidade do mesmo em tolerar a injeção de faltas transientes. 
@@ -127,14 +126,6 @@
 			\item \texttt{calculate\_estimate} - executada pelo método anterior e que corresponde ao valor calculado durante a transição de estado, ou seja, devolve a nova estimativa para o valor objetivo.
 		\end{itemize}
 
-		Dito isto, divulga-se de seguida uma figura representativa do pseudocódigo associado a esta versão:
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=1.0\textwidth, frame]{Images/Broadcast - Pseudocode.png}
-			\caption{Pseudocódigo do algoritmo \textit{Flow Updating} (\textit{broadcast})}
-			\label{fig:1}
-		\end{figure}
-
 		\subsubsection{\textit{Unicast}}
 		Quanto a esta versão, concebeu-se, da mesma forma, uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingUni}, que contém as mesmas informações, no seu estado, que as indicadas acima, para a classe de \textit{Broadcast}.
 		Para além destas, têm ainda um inteiro representativo do identificador do vizinho escolhido, sendo que o mesmo é selecionado pela função \texttt{chooseNeighbor}, que, tal como o nome transparece, devolve aleatoriamente o identificador de um dos vizinhos.
@@ -144,22 +135,15 @@
 			\item \texttt{gen\_message} - calcula apenas uma mensagem para o vizinho \textit{k}, em vez de todos os vizinhos, e a mensagem especial de fim de ronda;
 			\item \texttt{state\_transition} - calcula apenas a estimativa e o fluxo do vizinho \textit{k};
 		\end{itemize}
-
-		Expõe-se agora um diagrama alusivo ao pseudocódigo desta versão:
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=1.0\textwidth, frame]{Images/Unicast - Pseudocode.png}
-			\caption{Pseudocódigo do algoritmo \textit{Flow Updating} (\textit{unicast})}
-			\label{fig:2}
-		\end{figure}
 }
 
 \section{Simulador} \label{sec:Simulator}
 \large{
-	No que toca ao simulador utilizado, para proceder à realização de testes sobre o algoritmo escolhido, foram adicionados algumas funcionalidades face ao que foi desenvolvido durante as aulas da componenete prática desta unidade curricular.
-	Dado que o algoritmo selecionado suporta a injeção de faltas transientes, foi incorporado no simulador deste trabalho um mecanismo associado a esta última propriedade.
-	Como tal, foi declarada uma variável \textit{fp} relativa à probabilidade de ocorrência de faltas, isto é, à probabilidade de uma determinada mensagem se perder na rede de comunicação.
-	Para além desta caraterística, foi também introduzida uma técnica de mudança de vizinhança. Tal como a última propriedade, foi instanciada uma incógnita \textit{vcp} relativa ao número de segundos até que surja uma nova mudança de vizinhança no grafo em causa.
+	O simulador presente neste projeto consiste num programa escrito em \texttt{Python} que modela um sistema distribuído composto por um número arbitrário de nós e respetivas ligações entre eles.
+	Para além disso, este simula a passagem de tempo, permitindo não só a injeção de faltas através da eliminação de mensagens como também possibilita a mudança de vizinhança.
+
+	Para ajustar ao algoritmo selecionado, tivemos de implementar um mecanismo de deteção da precisão da estimativa atual dos nós do grafo gerado, por forma a garantir a cessação correta do algoritmo em questão.
+	Para isso, foi globalmente desenvolvido uma forma de computar o valor alvo (\textit{target}) para que, posteriormente, este seja comparado com a estimativa momentânea do sistema. No caso de haver uma aproximação com um erro inferior a 0.01, dá-se por concluído a execução do algoritmo.
 
 	Com estas modificações, foi possível averiguar a natureza inerente ao algoritmo \textit{flow updating}, observando-se o seu comportamento no contexto de sistemas distribuídos.
 }
