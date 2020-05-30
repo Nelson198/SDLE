@@ -74,6 +74,8 @@
     \maketitle
 \end{titlepage}
 
+\tableofcontents
+
 % Introdução
 
 \chapter{Introdução} \label{ch:Introduction}
@@ -92,7 +94,7 @@
 	Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
 }
 
-\chapter{Algoritmo} \label{ch:Algorithm}
+{\let\clearpage\relax \chapter{Algoritmo} \label{ch:Algorithm}}
 \large{
 	O algoritmo \textbf{\textit{flow updating}}, ao nível de comunicação, é classificado como não estruturado, inserindo-se na categoria \textit{gossip} que, por sua vez, diz respeito à forma como as mensagens são disseminadas pela rede de comunicação.
 	Quanto à perspetiva computacional, este algoritmo tem como objetivo a computação iterativa de médias parciais que, ao longo do tempo, convergem.
@@ -149,7 +151,7 @@
 		\end{itemize}
 }
 
-\chapter{Simulador} \label{ch:Simulator}
+{\let\clearpage\relax \chapter{Simulador} \label{ch:Simulator}}
 \large{
 	O simulador presente neste projeto consiste num programa escrito em \texttt{Python} que modela um sistema distribuído composto por um número arbitrário de nós e respetivas ligações entre eles.
 	Para além disso, este simula a passagem de tempo, permitindo não só a injeção de faltas através da eliminação de mensagens como também possibilita a mudança de vizinhança.
@@ -160,7 +162,7 @@
 	Com estas modificações, foi possível averiguar a natureza inerente ao algoritmo \textit{flow updating}, observando-se o seu comportamento no contexto de sistemas distribuídos.
 }
 
-\chapter{Análise de resultados obtidos} \label{ch:Analysis of results}
+{\let\clearpage\relax \chapter{Análise de resultados obtidos} \label{ch:Analysis of results}}
 \large{
 	Os resultados da avaliação obtidos, quando comparados com outras abordagens de \textit{averaging}, revelaram que os superam em termos de complexidade temporal (maior desempenho) e ao nível do número de mensagens trocadas (\textit{overhead}).
 	Em relação às duas variantes deste algoritmo, verificou-se que, de facto, a versão \textit{broadcast} é melhor do que a \textit{unicast} em ambos os aspetos anteriormente referidos.
@@ -169,30 +171,30 @@
 	Exibem-se de seguida 4 gráficos que evidenciam a respetiva análise:
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=1.0\textwidth]{Images/Plot1.png}
+		\includegraphics[width=0.8\textwidth]{Images/Plot1.png}
 		\label{fig:1}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=1.0\textwidth]{Images/Plot2.png}
+		\includegraphics[width=0.8\textwidth]{Images/Plot2.png}
 		\label{fig:2}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=1.0\textwidth]{Images/Plot3.png}
+		\includegraphics[width=0.8\textwidth]{Images/Plot3.png}
 		\label{fig:3}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=1.0\textwidth]{Images/Plot4.png}
+		\includegraphics[width=0.8\textwidth]{Images/Plot4.png}
 		\label{fig:4}
 	\end{figure}
 }
 
-\chapter{Conclusão} \label{ch:Conclusion}
+{\let\clearpage\relax \chapter{Conclusão} \label{ch:Conclusion}}
 \large{
 	Apesar do algoritmo selecionado por este grupo de trabalho trocar um maior número de mensagens na rede de comunicação (ainda que pouco significativo) do que outros de agregação distribuída, \textit{flow updating} é a única abordagem robusta e resiliente de agregação tolerante a falhas conhecida.
 	Esta é capaz de se adaptar continuamente às mudanças topológicas da rede, sem recorrer a nenhum tipo de mecanismo de reinicialização. Além disso, este algoritmo é adequado em cenários dinâmicos, onde são necessárias estimativas precisas sem haver a imposição muito restrita ao nível da quantidade de mensagens trocadas.
