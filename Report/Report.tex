@@ -1,8 +1,11 @@
 % Setup -------------------------------
 
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{report}
+\usepackage[a4paper, total={6in, 10in}]{geometry}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
+
+\usepackage{titlepic}
 
 \usepackage{hyperref}
 \usepackage{indentfirst}
@@ -55,17 +58,25 @@
 		\\
         PG41091 & Nelson José Dias Teixeira
 	\end{tabular}
+	\vspace{1cm}
 }
 
 \date{\today}
 
+\titlepic{
+	\vspace{2cm}
+	\includegraphics[scale=0.065]{Images/EEUM_logo.png}
+}
+
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+    \maketitle
+\end{titlepage}
 
 % Introdução
 
-\section{Introdução} \label{sec:Introduction}
+\chapter{Introdução} \label{ch:Introduction}
 \large{
 	O presente relatório descreve o desenvolvimento do projeto de cariz prático da unidade curricular de Sistemas Distribuídos em Larga Escala.
 	Neste trabalho é requerida a implementação de um dos algoritmos de agregação distribuída disponíveis no documento de suporte ao enunciado do mesmo \parencite{article}.
@@ -81,7 +92,7 @@
 	Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
 }
 
-\section{Algoritmo} \label{sec:Algorithm}
+\chapter{Algoritmo} \label{ch:Algorithm}
 \large{
 	O algoritmo \textbf{\textit{flow updating}}, ao nível de comunicação, é classificado como não estruturado, inserindo-se na categoria \textit{gossip} que, por sua vez, diz respeito à forma como as mensagens são disseminadas pela rede de comunicação.
 	Quanto à perspetiva computacional, este algoritmo tem como objetivo a computação iterativa de médias parciais que, ao longo do tempo, convergem.
@@ -93,9 +104,9 @@
 	Para além destas vantagens associadas ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, como também possibilita uma computação mais precisa de valores.
 	Por fim, a execução do algoritmo em causa é independente da topologia do roteamento de rede.
 
-	No \hyperref[sec:Analysis of results]{4º capítulo} deste documento são devidamente clarificados todos os resultados obtidos após a implementação do algoritmo escolhido, discutindo-se a veracidade das propriedades mencionadas acima.
+	No \hyperref[ch:Analysis of results]{4º capítulo} deste documento são devidamente clarificados todos os resultados obtidos após a implementação do algoritmo escolhido, discutindo-se a veracidade das propriedades mencionadas acima.
 
-	\subsection{Conceito} \label{subsec:Concept}
+	\section{Conceito} \label{sec:Concept}
 	O algoritmo \textit{flow updating} difere de outros propostos para o mesmo problema no sentido em que não se procede ao envio de mensagens complexas que, posteriormente, são armazenadas e disseminadas.
 	Em contraste, faz uso do conceito de fluxo (no sentido da teoria de grafos), atualizando-o com recurso ao valor inicial e à contribuição de fluxos de outros nós vizinhos, sendo que o fluxo é simétrico nos extremos de cada ligação. Por isto, a soma das médias de cada um dos nós deve manter-se constante.
 	Assim, partilha-se apenas o fluxo com os vizinhos, sendo que a perda de uma destas mensagens não implica uma falha grave.
@@ -104,12 +115,12 @@
 	Importa realçar que existem duas versões do algoritmo. A primeira assenta no envio de mensagens com recurso a \textit{broadcast} (\textit{N} para \textit{N}) enquanto que a segunda enquadra-se no envio de mensagens em \textit{unicast} (1 para 1).
 
 
-	\subsection{Implementação} \label{subsec:Implementation}
-	Tal como foi referido no fim do \hyperref[subsec:Concept]{subcapítulo anterior}, foram implementadas duas versões distintas do algoritmo em questão.
+	\section{Implementação} \label{sec:Implementation}
+	Tal como foi referido no fim do \hyperref[sec:Concept]{subcapítulo anterior}, foram implementadas duas versões distintas do algoritmo em questão.
 	À semelhença do que foi elaborado durantes as aulas práticas desta unidade curricular, estas duas versões foram implementadas na linguagem \texttt{Python}.
 	Para cada uma das mesmas são exibidos os respetivos detalhes computacionais e, ainda, um pequeno esquema relativo ao seu pseudocódigo.
 
-		\subsubsection{\textit{Broadcast}}
+		\subsection{\textit{Broadcast}} \label{subsec:Broadcast}
 		Relativamente a esta abordagem, criou-se uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingBroad}, que contém as seguintes informações no seu estado:
 		\begin{itemize}
 			\item um dicionário \textit{f} que contém os fluxos desses nós para os seus vizinhos;
@@ -127,7 +138,7 @@
 			\item \texttt{calculate\_estimate} - executada pelo método anterior e que corresponde ao valor calculado durante a transição de estado, ou seja, devolve a nova estimativa para o valor objetivo.
 		\end{itemize}
 
-		\subsubsection{\textit{Unicast}}
+		\subsection{\textit{Unicast}} \label{subsec:Unicast}
 		Quanto a esta versão, concebeu-se, da mesma forma, uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingUni}, que contém as mesmas informações, no seu estado, que as indicadas acima, para a classe de \textit{Broadcast}.
 		Para além destas, têm ainda um inteiro representativo do identificador do vizinho escolhido, sendo que o mesmo é selecionado pela função \texttt{chooseNeighbor}, que, tal como o nome transparece, devolve aleatoriamente o identificador de um dos vizinhos.
 
@@ -138,18 +149,18 @@
 		\end{itemize}
 }
 
-\section{Simulador} \label{sec:Simulator}
+\chapter{Simulador} \label{ch:Simulator}
 \large{
 	O simulador presente neste projeto consiste num programa escrito em \texttt{Python} que modela um sistema distribuído composto por um número arbitrário de nós e respetivas ligações entre eles.
 	Para além disso, este simula a passagem de tempo, permitindo não só a injeção de faltas através da eliminação de mensagens como também possibilita a mudança de vizinhança.
 
 	Para ajustar ao algoritmo selecionado, tivemos de implementar um mecanismo de deteção da precisão da estimativa atual dos nós do grafo gerado, por forma a garantir a cessação correta do algoritmo em questão.
-	Para isso, foi globalmente desenvolvido uma forma de computar o valor alvo (\textit{target}) para que, posteriormente, este seja comparado com a estimativa momentânea do sistema. No caso de haver uma aproximação com um erro inferior a 0.01, dá-se por concluído a execução do algoritmo.
+	Para isso, foi globalmente desenvolvida uma forma de computar o valor alvo (\textit{target}) para que, posteriormente, este seja comparado com a estimativa momentânea de todos os nós. No caso de haver uma aproximação com um erro inferior a 0.01, dá-se por concluído a execução do algoritmo.
 
 	Com estas modificações, foi possível averiguar a natureza inerente ao algoritmo \textit{flow updating}, observando-se o seu comportamento no contexto de sistemas distribuídos.
 }
 
-\section{Análise de resultados obtidos} \label{sec:Analysis of results}
+\chapter{Análise de resultados obtidos} \label{ch:Analysis of results}
 \large{
 	Os resultados da avaliação obtidos, quando comparados com outras abordagens de \textit{averaging}, revelaram que os superam em termos de complexidade temporal (maior desempenho) e ao nível do número de mensagens trocadas (\textit{overhead}).
 	Em relação às duas variantes deste algoritmo, verificou-se que, de facto, a versão \textit{broadcast} é melhor do que a \textit{unicast} em ambos os aspetos anteriormente referidos.
@@ -158,30 +169,30 @@
 	Exibem-se de seguida 4 gráficos que evidenciam a respetiva análise:
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}[b]{1\textwidth}
-			\includegraphics[width=1.0\textwidth]{Images/Plot1.png}
-			\label{fig:1}
-		\end{subfigure}
-		\begin{subfigure}[b]{1\textwidth}
-			\includegraphics[width=1.0\textwidth]{Images/Plot2.png}
-			\label{fig:2}
-		\end{subfigure}
+		\includegraphics[width=1.0\textwidth]{Images/Plot1.png}
+		\label{fig:1}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.0\textwidth]{Images/Plot2.png}
+		\label{fig:2}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}[b]{0.7\textwidth}
-			\includegraphics[width=1.0\textwidth]{Images/Plot3.png}
-			\label{fig:3}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.7\textwidth}
-			\includegraphics[width=1.0\textwidth]{Images/Plot4.png}
-			\label{fig:4}
-		\end{subfigure}
+		\includegraphics[width=1.0\textwidth]{Images/Plot3.png}
+		\label{fig:3}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.0\textwidth]{Images/Plot4.png}
+		\label{fig:4}
 	\end{figure}
 }
 
-\section{Conclusão} \label{sec:Conclusion}
+\chapter{Conclusão} \label{ch:Conclusion}
 \large{
 	Apesar do algoritmo selecionado por este grupo de trabalho trocar um maior número de mensagens na rede de comunicação (ainda que pouco significativo) do que outros de agregação distribuída, \textit{flow updating} é a única abordagem robusta e resiliente de agregação tolerante a falhas conhecida.
 	Esta é capaz de se adaptar continuamente às mudanças topológicas da rede, sem recorrer a nenhum tipo de mecanismo de reinicialização. Além disso, este algoritmo é adequado em cenários dinâmicos, onde são necessárias estimativas precisas sem haver a imposição muito restrita ao nível da quantidade de mensagens trocadas.
