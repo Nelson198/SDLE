@@ -91,7 +91,8 @@
 	Desta forma, este grupo de trabalho viu-se interessado em implementar um dos algoritmos com esta propriedade, \textit{flow updating} \parencite{ref}.
 
 	Relativamente à estrutura deste relatório, é exibido o algoritmo escolhido, apresentando o conceito e a implementação intrínsecos ao mesmo. 
-	Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando finalmente uma análise dos resultados obtidos.
+	Para além disso, são evidenciados alguns aspetos relativos ao simulador utilizado para proceder à realização de testes do algoritmo em causa, efetuando-se posteriormente uma análise dos resultados obtidos.
+	Por fim, são resumidos os tópicos referentes a este trabalho, concluindo, assim, a sua realização.
 }
 
 {\let\clearpage\relax \chapter{Algoritmo} \label{ch:Algorithm}}
@@ -102,7 +103,7 @@
 
 	Uma das razões que levou este grupo a escolher este algoritmo foi a capacidade do mesmo em tolerar a injeção de faltas transientes. 
 	Esta última caraterística é bastante importante sobretudo no que diz respeito à perda de mensagens trocadas na rede de comunicação.
-	Com pequenas alterações, é ainda possível que o algoritmo suporte falhas de membros, falhas permanentes de ligações e mudanças de vizinhança.
+	Com pequenas alterações, é ainda possível que o algoritmo suporte falhas de membros e falhas permanentes de ligações.
 	Para além destas vantagens associadas ao contexto de sistemas distribuídos, este algoritmo possui não só um melhor desempenho quando comparado com os outros da mesma classe, como também possibilita uma computação mais precisa de valores.
 	Por fim, a execução do algoritmo em causa é independente da topologia do roteamento de rede.
 
@@ -120,10 +121,10 @@
 	\section{Implementação} \label{sec:Implementation}
 	Tal como foi referido no fim do \hyperref[sec:Concept]{subcapítulo anterior}, foram implementadas duas versões distintas do algoritmo em questão.
 	À semelhença do que foi elaborado durantes as aulas práticas desta unidade curricular, estas duas versões foram implementadas na linguagem \texttt{Python}.
-	Para cada uma das mesmas são exibidos os respetivos detalhes computacionais e, ainda, um pequeno esquema relativo ao seu pseudocódigo.
+	Para cada uma das mesmas são exibidos os respetivos detalhes computacionais.
 
 		\subsection{\textit{Broadcast}} \label{subsec:Broadcast}
-		Relativamente a esta abordagem, criou-se uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingBroad}, que contém as seguintes informações no seu estado:
+		Relativamente a esta abordagem, criou-se uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingBroadcast}, que contém as seguintes informações no seu estado:
 		\begin{itemize}
 			\item um dicionário \textit{f} que contém os fluxos desses nós para os seus vizinhos;
 			\item um dicionário \textit{e} que contém as estimativas que recebeu dos seus vizinhos;
@@ -141,7 +142,7 @@
 		\end{itemize}
 
 		\subsection{\textit{Unicast}} \label{subsec:Unicast}
-		Quanto a esta versão, concebeu-se, da mesma forma, uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingUni}, que contém as mesmas informações, no seu estado, que as indicadas acima, para a classe de \textit{Broadcast}.
+		Quanto a esta versão, concebeu-se, da mesma forma, uma classe para representar um nó do grafo, com o nome \texttt{flowUpdatingUnicast}, que contém as mesmas informações, no seu estado, que as indicadas acima, para a classe de \textit{Broadcast}.
 		Para além destas, têm ainda um inteiro representativo do identificador do vizinho escolhido, sendo que o mesmo é selecionado pela função \texttt{chooseNeighbor}, que, tal como o nome transparece, devolve aleatoriamente o identificador de um dos vizinhos.
 
 		As funções desta classe são as mesmas que as expostas anteriormente na classe \textit{broadcast}, com as seguintes alterações:
@@ -158,19 +159,19 @@
 	
 	Para poder simular um sistema composto por vários nós, este guarda no seu estado uma lista com os nós do sistema e as distâncias de todas as ligações que existem. Para além disto, tem uma lista onde guarda as mensagens pendentes do sistema e um inteiro que representa o tempo atual (numa unidade arbitrária).
 	
-	De forma a ser possível costumizar o comportamento da simulação, podem ser configurados diversos parâmetros, entre os quais a probabilidade de falha no envio de uma mensagem, a periodicidade em que ocorrem mudanças de vista (isto é, a alteração das ligações do sistema) e o \textit{timeout} é utilizado para o envio de mensagens periódicas de um nó para ele mesmo (representa, por exemplo, o fim de uma ronda).
+	De forma a ser possível costumizar o comportamento da simulação, podem ser configurados diversos parâmetros, entre os quais a probabilidade de falha no envio de uma mensagem, a periodicidade em que ocorrem mudanças de vista (isto é, a alteração das ligações do sistema) e, ainda, o \textit{timeout} que é utilizado para o envio de mensagens periódicas de um nó para ele mesmo (representa, por exemplo, o fim de uma ronda).
 	
 	Para ajustar ao algoritmo selecionado, tivemos de implementar um mecanismo de deteção da precisão da estimativa atual dos nós do grafo gerado, por forma a garantir que o algoritmo converge corretamente.
 	Para isso, foi desenvolvida uma forma de computar o valor alvo (\textit{target}) para que, posteriormente, este seja comparado com a estimativa momentânea de todos os nós. No caso de haver uma aproximação com um erro inferior a 0.01, dá-se por concluída a execução do algoritmo.
 
 	Quanto aos métodos que o simulador possui, temos a destacar:
 	\begin{itemize}
-		\item \texttt{start} - gera as mensagens iniciais, calcula o valor objetivo e programa a primeira mudança de vista, no caso de esta existir;
-		\item \texttt{runLoop} - processa as mensagens do sistema, tratando de entregá-las ao seu destino e a incorporar as novas mensagens no sistema. Para além disso, é responsável pelas mudanças de vista e injeção de faltas, bem como a terminação do algoritmo no caso do valor objetivo ser atingido (dentro da margem de erro);
+		\item \texttt{start} - gera as mensagens iniciais, calcula o valor objetivo e programa a primeira mudança de vista, no caso desta existir;
+		\item \texttt{runLoop} - processa as mensagens do sistema, tratando não só de entregá-las ao seu destino como também de incorporar as novas. Para além disso, é responsável pelas mudanças de vista e injeção de faltas, bem como a terminação do algoritmo no caso do valor objetivo ser atingido (dentro da margem de erro estipulada);
 		\item \texttt{closeToTarget} - verifica se a estimativa do sistema está suficientemente próxima do valor objetivo.
 	\end{itemize}
 
-	Assim, foi possível averiguar a natureza inerente ao algoritmo \textit{flow updating}, observando-se o seu comportamento no contexto de sistemas distribuídos.
+	Assim, foi possível averiguar a natureza inerente ao algoritmo \textit{flow updating}, observando-se o seu comportamento no âmbito de sistemas distribuídos.
 }
 
 {\let\clearpage\relax \chapter{Análise de resultados obtidos} \label{ch:Analysis of results}}
@@ -180,33 +181,33 @@
 	enquanto na versão \textit{unicast} cada nó envia apenas um mensagem para um vizinho a cada ronda.	
 	É também de salientar que mesmo em condições de perdas significativas de mensagens, o algoritmo elegido exibe um desempenho satisfatório, convergindo sempre para o valor pretendido.
 
-	Nos gráficos em que podemos ver a relação entre o número de nós e o número de mensagens/rondas temos algumas flutuações em relação aos resultados que esperavamos.
+	Nos gráficos em que podemos ver a relação entre o número de nós e o número de mensagens/rondas temos algumas flutuações em relação aos resultados que esperávamos.
 	Tal pode ser explicado por serem criados grafos novos para cada número diferente de nós, sendo que, por ser seguido um método aleatório na geração das ligações do grafo, 
 	o número de ligações ou até mesmo o diâmetro do grafo, podem ter influência no tempo de execução do algoritmo.
-	Nos gráficos que relacionam a percentagem de mensagens perdidas com o número de mensagens/roundas as mesmas flutuações já não existem, uma vez que o grafo utilizado é sempre o mesmo.
+	Nos gráficos que relacionam a percentagem de mensagens perdidas com o número de mensagens/rondas as mesmas flutuações já não existem, uma vez que o grafo utilizado é sempre o mesmo.
 
 	Exibem-se de seguida 4 gráficos que evidenciam a respetiva análise:
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.8\textwidth]{Images/Plot1.png}
+		\includegraphics[width=0.98\textwidth]{Images/Plot1.png}
 		\label{fig:1}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.8\textwidth]{Images/Plot2.png}
+		\includegraphics[width=0.96\textwidth]{Images/Plot2.png}
 		\label{fig:2}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.8\textwidth]{Images/Plot3.png}
+		\includegraphics[width=0.98\textwidth]{Images/Plot3.png}
 		\label{fig:3}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.8\textwidth]{Images/Plot4.png}
+		\includegraphics[width=0.98\textwidth]{Images/Plot4.png}
 		\label{fig:4}
 	\end{figure}
 }
