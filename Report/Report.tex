@@ -160,8 +160,8 @@
 	
 	De forma a ser possível costumizar o comportamento da simulação, podem ser configurados diversos parâmetros, entre os quais a probabilidade de falha no envio de uma mensagem, a periodicidade em que ocorrem mudanças de vista (isto é, a alteração das ligações do sistema) e o \textit{timeout} é utilizado para o envio de mensagens periódicas de um nó para ele mesmo (representa, por exemplo, o fim de uma ronda).
 	
-	Para ajustar ao algoritmo selecionado, tivemos de implementar um mecanismo de deteção da precisão da estimativa atual dos nós do grafo gerado, por forma a garantir a cessação correta do algoritmo em questão.
-	Para isso, foi globalmente desenvolvida uma forma de computar o valor alvo (\textit{target}) para que, posteriormente, este seja comparado com a estimativa momentânea de todos os nós. No caso de haver uma aproximação com um erro inferior a 0.01, dá-se por concluído a execução do algoritmo.
+	Para ajustar ao algoritmo selecionado, tivemos de implementar um mecanismo de deteção da precisão da estimativa atual dos nós do grafo gerado, por forma a garantir que o algoritmo converge corretamente.
+	Para isso, foi desenvolvida uma forma de computar o valor alvo (\textit{target}) para que, posteriormente, este seja comparado com a estimativa momentânea de todos os nós. No caso de haver uma aproximação com um erro inferior a 0.01, dá-se por concluída a execução do algoritmo.
 
 	Quanto aos métodos que o simulador possui, temos a destacar:
 	\begin{itemize}
@@ -175,8 +175,15 @@
 
 {\let\clearpage\relax \chapter{Análise de resultados obtidos} \label{ch:Analysis of results}}
 \large{
-	Em relação às duas variantes deste algoritmo, verificou-se que a versão \textit{broadcast} é melhor do que a \textit{unicast} em termos do número de rondas e de mensagens trocadas, o que pode ser verificado nos gráficos apresentados.
+	Em relação às duas variantes deste algoritmo, verificou-se que a versão \textit{broadcast} é melhor do que a \textit{unicast} em termos do número de rondas e de mensagens trocadas.
+	O número de rondas apresenta uma maior descrepância entre as duas versões, o que é explicável pelo facto de na versão \textit{broadcast} cada nó enviar mensagens para todos os vizinhos em cada ronda, 
+	enquanto na versão \textit{unicast} cada nó envia apenas um mensagem para um vizinho a cada ronda.	
 	É também de salientar que mesmo em condições de perdas significativas de mensagens, o algoritmo elegido exibe um desempenho satisfatório, convergindo sempre para o valor pretendido.
+
+	Nos gráficos em que podemos ver a relação entre o número de nós e o número de mensagens/rondas temos algumas flutuações em relação aos resultados que esperavamos.
+	Tal pode ser explicado por serem criados grafos novos para cada número diferente de nós, sendo que, por ser seguido um método aleatório na geração das ligações do grafo, 
+	o número de ligações ou até mesmo o diâmetro do grafo, podem ter influência no tempo de execução do algoritmo.
+	Nos gráficos que relacionam a percentagem de mensagens perdidas com o número de mensagens/roundas as mesmas flutuações já não existem, uma vez que o grafo utilizado é sempre o mesmo.
 
 	Exibem-se de seguida 4 gráficos que evidenciam a respetiva análise:
 	\begin{figure}[H]
@@ -208,7 +215,9 @@
 \large{
 	Apesar do algoritmo selecionado por este grupo de trabalho trocar um maior número de mensagens na rede de comunicação (ainda que pouco significativo) do que outros de agregação distribuída, \textit{flow updating} é a única abordagem robusta e resiliente de agregação tolerante a falhas conhecida.
 	Esta é capaz de se adaptar continuamente às mudanças topológicas da rede, sem recorrer a nenhum tipo de mecanismo de reinicialização. Além disso, este algoritmo é adequado em cenários dinâmicos, onde são necessárias estimativas precisas sem haver a imposição muito restrita ao nível da quantidade de mensagens trocadas.
-	Durante a implementação do algoritmo, o simulador permitiu encontrar erros no mesmo, testá-lo e melhorar o próprio simulador. 
+	Durante a implementação do algoritmo, o simulador ajudou na conceção do mesmo, uma vez que foi possível tirar ilações enquanto este era desenvolvido. 
+	Também permitiu encontrar erros, testar o algoritmo, comparar versões, testar otimizações e implementá-las.
+	No geral, o desempenho do simulador e do algoritmo são satisfatórios, o que nos permite afirmar que atingimos os objetivos propostos.
 }
 
 \printbibliography[heading=bibintoc]
